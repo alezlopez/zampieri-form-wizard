@@ -19,7 +19,7 @@ const AvaliacaoIdentidade: React.FC<AvaliacaoIdentidadeProps> = ({ formData, err
     return (
       <div className="space-y-4">
         <h3 className="text-lg font-medium">Avaliação de Identidade</h3>
-        <Alert className="bg-blue-50 border-blue-200">
+        <Alert className="bg-green-50 border-green-200">
           <AlertDescription>
             Esta etapa não é necessária para alunos até o 5º ano do ensino fundamental.
           </AlertDescription>

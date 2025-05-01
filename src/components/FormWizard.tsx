@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -31,7 +30,6 @@ const FormWizard = () => {
     // Dados iniciais
     whatsapp: '+55 ',
     consentimento: false,
-    entrevistaDesejada: ''
   });
   const [erros, setErros] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -330,7 +328,7 @@ const FormWizard = () => {
             <p className="mb-6 text-gray-600">
               Obrigado por completar a pré-matrícula do Colégio Zampieri. Nossa equipe entrará em contato em breve.
             </p>
-            <Button onClick={() => window.location.reload()} className="bg-primary hover:bg-blue-700">
+            <Button onClick={() => window.location.reload()} className="bg-green-700 hover:bg-green-800">
               Preencher novo formulário
             </Button>
           </div>
@@ -347,18 +345,18 @@ const FormWizard = () => {
         </CardTitle>
       </CardHeader>
       
-      <div className="p-4 bg-blue-50">
-        <div className="flex justify-between text-xs text-blue-700 mb-1">
+      <div className="p-4 bg-green-50">
+        <div className="flex justify-between text-xs text-green-700 mb-1">
           <span>Etapa {etapaAtual + 1} de {etapas.length}</span>
           <span>{Math.round(((etapaAtual + 1) / etapas.length) * 100)}%</span>
         </div>
-        <div className="w-full bg-blue-200 rounded-full h-2.5">
+        <div className="w-full bg-green-200 rounded-full h-2.5">
           <div 
-            className="bg-primary h-2.5 rounded-full progress-bar" 
+            className="bg-green-700 h-2.5 rounded-full progress-bar" 
             style={{width: `${((etapaAtual + 1) / etapas.length) * 100}%`}}
           ></div>
         </div>
-        <h2 className="font-medium text-blue-900 mt-2">{etapas[etapaAtual]}</h2>
+        <h2 className="font-medium text-green-800 mt-2">{etapas[etapaAtual]}</h2>
       </div>
       
       <CardContent className="pt-6 form-section">
@@ -373,7 +371,7 @@ const FormWizard = () => {
             variant="outline" 
             onClick={voltarEtapa}
             disabled={isSubmitting}
-            className="flex items-center gap-1"
+            className="flex items-center gap-1 border-green-600 text-green-700 hover:text-green-700 hover:bg-green-50"
           >
             <ChevronLeft className="h-4 w-4" /> Voltar
           </Button>
@@ -384,14 +382,14 @@ const FormWizard = () => {
         {etapaAtual < etapas.length - 1 ? (
           <Button 
             onClick={avancarEtapa} 
-            className="bg-primary hover:bg-blue-700 flex items-center gap-1"
+            className="bg-green-700 hover:bg-green-800 flex items-center gap-1"
           >
             Avançar <ChevronRight className="h-4 w-4" />
           </Button>
         ) : (
           <Button 
             onClick={enviarFormulario} 
-            className="bg-green-600 hover:bg-green-700"
+            className="bg-red-600 hover:bg-red-700"
             disabled={isSubmitting}
           >
             {isSubmitting ? "Enviando..." : "Finalizar e enviar"}
