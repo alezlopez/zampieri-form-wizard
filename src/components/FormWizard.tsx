@@ -152,7 +152,6 @@ const FormWizard = () => {
         break;
         
       case 6: // Consentimento
-        if (!formData.entrevistaDesejada) novosErros.entrevistaDesejada = 'É necessário escolher uma opção';
         if (!formData.consentimento) novosErros.consentimento = 'Você precisa declarar que as informações são verdadeiras';
         break;
     }
