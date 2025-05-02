@@ -201,7 +201,16 @@ const FormWizard = () => {
     try {
       // Calcula a pontuação baseada nas respostas
       const score = calculateScore(formData);
-      const { necessaria, sugerida } = getEntrevistaStatus(score);
+      const { necessaria } = getEntrevistaStatus(score);
+      
+      // Verificar se tem diagnóstico ou laudo para acionar entrevista obrigatória
+      const temDiagnosticoOuLaudo = 
+        formData.diagnosticoTranstorno === 'Sim (diagnosticado)' || 
+        formData.diagnosticoTranstorno === 'Sim (em avaliação)' || 
+        formData.laudoMedico === 'Sim' || 
+        formData.laudoMedico === 'Em andamento';
+      
+      const entrevistaObrigatoria = necessaria || temDiagnosticoOuLaudo;
       
       // Preparar os dados para envio
       const formDataToSend = new FormData();
@@ -217,8 +226,8 @@ const FormWizard = () => {
       
       // Adiciona os campos de pontuação
       formDataToSend.append('score', String(score));
-      formDataToSend.append('entrevista_necessaria', String(necessaria));
-      formDataToSend.append('entrevista_sugerida', String(sugerida));
+      formDataToSend.append('entrevista_necessaria', String(entrevistaObrigatoria));
+      formDataToSend.append('entrevista_sugerida', 'false'); // Não é mais usado no novo sistema
       
       // Envia para o webhook
       const response = await fetch('https://n8n.colegiozampieri.com/webhook/recebe-form', {

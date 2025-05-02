@@ -82,44 +82,54 @@ export const formatWhatsApp = (value: string): string => {
 
 // Calcular a pontuação com base nas respostas
 export const calculateScore = (formData: any): number => {
-  let score = 0;
+  // Iniciamos com pontuação de 100
+  let score = 100;
   
-  // Histórico Acadêmico
-  if (formData.repetente === 'Sim') score += 2;
+  // 🧠 Histórico e desempenho
+  // Repetência
+  if (formData.repetente === 'Sim') score -= 20;
   
-  if (formData.dificuldadeAprendizagem === 'Sim') score += 2;
-  else if (formData.dificuldadeAprendizagem === 'Ainda não avaliado') score += 1;
+  // Dificuldade de aprendizagem
+  if (formData.dificuldadeAprendizagem === 'Sim') score -= 30;
+  else if (formData.dificuldadeAprendizagem === 'Ainda não avaliado') score -= 10;
   
+  // Reforço escolar ou acompanhamento
   if (formData.atendimentoEducacional && 
      (formData.atendimentoEducacional === 'Reforço escolar' || 
       formData.atendimentoEducacional === 'Psicopedagógico' || 
       formData.atendimentoEducacional === 'Fonoaudiólogo / Psicólogo')) {
-    score += 1;
+    score -= 10;
   }
   
-  // Cognitivo e Comportamental
-  if (formData.dificuldadeAtencao === 'Sim') score += 2;
-  else if (formData.dificuldadeAtencao === 'Às vezes') score += 1;
+  // 📑 Tipo de escola atual
+  if (formData.tipoEscola === 'Pública') score -= 10;
   
-  if (formData.diagnosticoTranstorno === 'Sim (diagnosticado)') score += 3;
-  else if (formData.diagnosticoTranstorno === 'Sim (em avaliação)') score += 2;
-  else if (formData.diagnosticoTranstorno === 'Prefiro não responder') score += 1;
+  // 🧾 Laudo, atendimento ou suspeita de NEE
+  // Verificamos diagnóstico ou laudo
+  const temDiagnosticoOuLaudo = 
+    formData.diagnosticoTranstorno === 'Sim (diagnosticado)' || 
+    formData.diagnosticoTranstorno === 'Sim (em avaliação)' || 
+    formData.laudoMedico === 'Sim' || 
+    formData.laudoMedico === 'Em andamento';
   
-  if (formData.dificuldadeSocializacao === 'Sim') score += 2;
-  else if (formData.dificuldadeSocializacao === 'Em algumas situações') score += 1;
+  if (temDiagnosticoOuLaudo) score -= 40;
   
-  // Saúde e Apoio
-  if (formData.usoMedicacao === 'Sim') score += 1;
+  // 📱 Número de celular com formato válido e e-mail preenchido?
+  const whatsappValido = formData.whatsapp && 
+    formData.whatsapp.replace(/\D/g, '').length >= 13;
+    
+  const emailValido = formData.email && 
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email);
   
-  if (formData.laudoMedico === 'Sim') score += 3;
-  else if (formData.laudoMedico === 'Em andamento') score += 2;
+  if (whatsappValido && emailValido) score += 5;
   
   return score;
 };
 
 export const getEntrevistaStatus = (score: number): { necessaria: boolean, sugerida: boolean } => {
   return {
-    necessaria: score >= 7,
-    sugerida: score >= 4 && score < 7,
+    necessaria: score <= 59,
+    sugerida: false, // Não é mais usado na nova classificação
   };
 };
+
