@@ -141,14 +141,7 @@ const FormWizard = () => {
         break;
         
       case 5: // Avaliação de Identidade
-        // Só valida áudio se o aluno for do 6º ano em diante
-        const seriesQueExigemAudio = ['6º ano', '7º ano', '8º ano', '9º ano', '1º Médio', '2º Médio', '3º Médio'];
-        if (
-          seriesQueExigemAudio.includes(formData.seriePretendida) && 
-          !formData.audioHistoria
-        ) {
-          novosErros.audioHistoria = 'A gravação de áudio é obrigatória para alunos do 6º ano em diante';
-        }
+        // Removida validação para arquivo de áudio
         break;
         
       case 6: // Consentimento
