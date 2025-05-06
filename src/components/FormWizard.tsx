@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -123,9 +122,9 @@ const FormWizard = () => {
         if (!formData.repetente) novosErros.repetente = 'Esta informação é obrigatória';
         if (!formData.dificuldadeAprendizagem) novosErros.dificuldadeAprendizagem = 'Esta informação é obrigatória';
         if (!formData.atendimentoEducacional) novosErros.atendimentoEducacional = 'Esta informação é obrigatória';
-        // Validar upload de boletim se for repetente
-        if (formData.repetente === 'Sim' && !formData.boletimEscolar) {
-          novosErros.boletimEscolar = 'O upload do boletim é obrigatório para alunos repetentes';
+        // Validar upload de boletim para todos os alunos
+        if (!formData.boletimEscolar) {
+          novosErros.boletimEscolar = 'O upload do boletim escolar é obrigatório';
         }
         break;
         
