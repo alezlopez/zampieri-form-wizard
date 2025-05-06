@@ -32,10 +32,6 @@ const HistoricoAcademico: React.FC<HistoricoAcademicoProps> = ({ formData, erros
               <RadioGroupItem value="Não" id="repetente-nao" />
               <Label htmlFor="repetente-nao">Não</Label>
             </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="Não sei informar" id="repetente-nao-sei" />
-              <Label htmlFor="repetente-nao-sei">Não sei informar</Label>
-            </div>
           </RadioGroup>
           {erros.repetente && <p className="text-destructive text-xs mt-1">{erros.repetente}</p>}
         </div>
@@ -77,10 +73,6 @@ const HistoricoAcademico: React.FC<HistoricoAcademicoProps> = ({ formData, erros
               <RadioGroupItem value="Não" id="dificuldade-nao" />
               <Label htmlFor="dificuldade-nao">Não</Label>
             </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="Ainda não avaliado" id="dificuldade-nao-avaliado" />
-              <Label htmlFor="dificuldade-nao-avaliado">Ainda não avaliado</Label>
-            </div>
           </RadioGroup>
           {erros.dificuldadeAprendizagem && <p className="text-destructive text-xs mt-1">{erros.dificuldadeAprendizagem}</p>}
         </div>
@@ -109,10 +101,6 @@ const HistoricoAcademico: React.FC<HistoricoAcademicoProps> = ({ formData, erros
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="Nenhum" id="atendimento-nenhum" />
               <Label htmlFor="atendimento-nenhum">Nenhum</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="Prefiro não responder" id="atendimento-nao-responder" />
-              <Label htmlFor="atendimento-nao-responder">Prefiro não responder</Label>
             </div>
           </RadioGroup>
           {erros.atendimentoEducacional && <p className="text-destructive text-xs mt-1">{erros.atendimentoEducacional}</p>}

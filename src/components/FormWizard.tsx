@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -11,7 +12,6 @@ import DadosAluno from './wizard/DadosAluno';
 import HistoricoAcademico from './wizard/HistoricoAcademico';
 import Desenvolvimento from './wizard/Desenvolvimento';
 import Saude from './wizard/Saude';
-import AvaliacaoIdentidade from './wizard/AvaliacaoIdentidade';
 import Consentimento from './wizard/Consentimento';
 
 const etapas = [
@@ -20,7 +20,6 @@ const etapas = [
   "Histórico Acadêmico",
   "Desenvolvimento e Comportamento",
   "Saúde e Apoio",
-  "Avaliação de Identidade",
   "Consentimento"
 ];
 
@@ -30,6 +29,7 @@ const FormWizard = () => {
     // Dados iniciais
     whatsapp: '+55 ',
     consentimento: false,
+    politicaPrivacidade: false
   });
   const [erros, setErros] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -133,19 +133,22 @@ const FormWizard = () => {
         if (!formData.dificuldadeAtencao) novosErros.dificuldadeAtencao = 'Esta informação é obrigatória';
         if (!formData.diagnosticoTranstorno) novosErros.diagnosticoTranstorno = 'Esta informação é obrigatória';
         if (!formData.dificuldadeSocializacao) novosErros.dificuldadeSocializacao = 'Esta informação é obrigatória';
+        // Validar upload de laudo ou relatório
+        if (formData.diagnosticoTranstorno === 'Sim (diagnosticado)' && !formData.laudoMedico) {
+          novosErros.laudoMedicoArquivo = 'O upload do laudo é obrigatório para alunos com diagnóstico';
+        }
+        if (formData.diagnosticoTranstorno === 'Sim (em avaliação)' && !formData.relatorioMedico) {
+          novosErros.relatorioMedico = 'O upload do relatório é obrigatório para alunos em avaliação';
+        }
         break;
         
       case 4: // Saúde e Apoio
         if (!formData.usoMedicacao) novosErros.usoMedicacao = 'Esta informação é obrigatória';
-        if (!formData.laudoMedico) novosErros.laudoMedico = 'Esta informação é obrigatória';
         break;
         
-      case 5: // Avaliação de Identidade
-        // Removida validação para arquivo de áudio
-        break;
-        
-      case 6: // Consentimento
+      case 5: // Consentimento
         if (!formData.consentimento) novosErros.consentimento = 'Você precisa declarar que as informações são verdadeiras';
+        if (!formData.politicaPrivacidade) novosErros.politicaPrivacidade = 'Você precisa concordar com a política de privacidade';
         break;
     }
     
@@ -199,9 +202,7 @@ const FormWizard = () => {
       // Verificar se tem diagnóstico ou laudo para acionar entrevista obrigatória
       const temDiagnosticoOuLaudo = 
         formData.diagnosticoTranstorno === 'Sim (diagnosticado)' || 
-        formData.diagnosticoTranstorno === 'Sim (em avaliação)' || 
-        formData.laudoMedico === 'Sim' || 
-        formData.laudoMedico === 'Em andamento';
+        formData.diagnosticoTranstorno === 'Sim (em avaliação)';
       
       const entrevistaObrigatoria = necessaria || temDiagnosticoOuLaudo;
       
@@ -283,6 +284,7 @@ const FormWizard = () => {
             formData={formData} 
             erros={erros}
             handleRadioChange={handleRadioChange}
+            onChange={handleChange}
           />
         );
       case 4:
@@ -294,14 +296,6 @@ const FormWizard = () => {
           />
         );
       case 5:
-        return (
-          <AvaliacaoIdentidade 
-            formData={formData} 
-            erros={erros} 
-            onChange={handleChange}
-          />
-        );
-      case 6:
         return (
           <Consentimento 
             formData={formData} 

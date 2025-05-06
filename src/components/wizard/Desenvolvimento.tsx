@@ -2,14 +2,16 @@
 import React from 'react';
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Input } from "@/components/ui/input";
 
 interface DesenvolvimentoProps {
   formData: any;
   erros: Record<string, string>;
   handleRadioChange: (nome: string, valor: string) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const Desenvolvimento: React.FC<DesenvolvimentoProps> = ({ formData, erros, handleRadioChange }) => {
+const Desenvolvimento: React.FC<DesenvolvimentoProps> = ({ formData, erros, handleRadioChange, onChange }) => {
   return (
     <div className="space-y-4">
       <h3 className="text-lg font-medium">Desenvolvimento e Comportamento</h3>
@@ -59,13 +61,49 @@ const Desenvolvimento: React.FC<DesenvolvimentoProps> = ({ formData, erros, hand
               <RadioGroupItem value="Não" id="transtorno-nao" />
               <Label htmlFor="transtorno-nao">Não</Label>
             </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="Prefiro não responder" id="transtorno-nao-responder" />
-              <Label htmlFor="transtorno-nao-responder">Prefiro não responder</Label>
-            </div>
           </RadioGroup>
           {erros.diagnosticoTranstorno && <p className="text-destructive text-xs mt-1">{erros.diagnosticoTranstorno}</p>}
         </div>
+        
+        {formData.diagnosticoTranstorno === 'Sim (diagnosticado)' && (
+          <div>
+            <Label htmlFor="laudoMedico" className="text-sm font-medium">
+              Upload do laudo médico
+            </Label>
+            <Input
+              id="laudoMedico"
+              name="laudoMedico"
+              type="file"
+              onChange={onChange}
+              className={`mt-1 ${erros.laudoMedicoArquivo ? "input-error" : ""}`}
+              accept=".pdf,.jpg,.jpeg,.png"
+            />
+            {erros.laudoMedicoArquivo && <p className="text-destructive text-xs mt-1">{erros.laudoMedicoArquivo}</p>}
+            <p className="text-xs text-muted-foreground mt-1">
+              Formatos aceitos: PDF, JPG, JPEG, PNG. Tamanho máximo: 10MB.
+            </p>
+          </div>
+        )}
+        
+        {formData.diagnosticoTranstorno === 'Sim (em avaliação)' && (
+          <div>
+            <Label htmlFor="relatorioMedico" className="text-sm font-medium">
+              Upload do relatório de avaliação
+            </Label>
+            <Input
+              id="relatorioMedico"
+              name="relatorioMedico"
+              type="file"
+              onChange={onChange}
+              className={`mt-1 ${erros.relatorioMedico ? "input-error" : ""}`}
+              accept=".pdf,.jpg,.jpeg,.png"
+            />
+            {erros.relatorioMedico && <p className="text-destructive text-xs mt-1">{erros.relatorioMedico}</p>}
+            <p className="text-xs text-muted-foreground mt-1">
+              Formatos aceitos: PDF, JPG, JPEG, PNG. Tamanho máximo: 10MB.
+            </p>
+          </div>
+        )}
         
         <div>
           <Label className="text-sm font-medium">Dificuldade de socialização?</Label>
