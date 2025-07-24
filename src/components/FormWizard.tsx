@@ -136,8 +136,8 @@ const FormWizard = () => {
         if (formData.diagnosticoTranstorno === 'Sim (diagnosticado)' && !formData.laudoMedico) {
           novosErros.laudoMedicoArquivo = 'O upload do laudo é obrigatório para alunos com diagnóstico';
         }
-        if (formData.diagnosticoTranstorno === 'Sim (em avaliação)' && !formData.relatorioMedico) {
-          novosErros.relatorioMedico = 'O upload do relatório é obrigatório para alunos em avaliação';
+        if (formData.diagnosticoTranstorno === 'Sim (em avaliação)' && !formData.laudoMedico) {
+          novosErros.laudoMedico = 'O upload do relatório é obrigatório para alunos em avaliação';
         }
         break;
         
