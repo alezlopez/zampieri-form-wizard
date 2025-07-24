@@ -122,8 +122,8 @@ const FormWizard = () => {
         if (!formData.repetente) novosErros.repetente = 'Esta informação é obrigatória';
         if (!formData.dificuldadeAprendizagem) novosErros.dificuldadeAprendizagem = 'Esta informação é obrigatória';
         if (!formData.atendimentoEducacional) novosErros.atendimentoEducacional = 'Esta informação é obrigatória';
-        // Validar upload de boletim para todos os alunos
-        if (!formData.boletimEscolar) {
+        // Validar upload de boletim (não obrigatório para série "pré")
+        if (!formData.boletimEscolar && formData.serie !== 'pré') {
           novosErros.boletimEscolar = 'O upload do boletim escolar é obrigatório';
         }
         break;
