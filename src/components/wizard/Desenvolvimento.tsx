@@ -87,18 +87,18 @@ const Desenvolvimento: React.FC<DesenvolvimentoProps> = ({ formData, erros, hand
         
         {formData.diagnosticoTranstorno === 'Sim (em avaliação)' && (
           <div>
-            <Label htmlFor="relatorioMedico" className="text-sm font-medium">
+            <Label htmlFor="laudoMedico" className="text-sm font-medium">
               Upload do relatório de avaliação
             </Label>
             <Input
-              id="relatorioMedico"
-              name="relatorioMedico"
+              id="laudoMedico"
+              name="laudoMedico"
               type="file"
               onChange={onChange}
-              className={`mt-1 ${erros.relatorioMedico ? "input-error" : ""}`}
+              className={`mt-1 ${erros.laudoMedico ? "input-error" : ""}`}
               accept=".pdf,.jpg,.jpeg,.png"
             />
-            {erros.relatorioMedico && <p className="text-destructive text-xs mt-1">{erros.relatorioMedico}</p>}
+            {erros.laudoMedico && <p className="text-destructive text-xs mt-1">{erros.laudoMedico}</p>}
             <p className="text-xs text-muted-foreground mt-1">
               Formatos aceitos: PDF, JPG, JPEG, PNG. Tamanho máximo: 10MB.
             </p>

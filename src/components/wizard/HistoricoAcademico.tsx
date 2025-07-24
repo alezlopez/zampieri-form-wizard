@@ -36,23 +36,25 @@ const HistoricoAcademico: React.FC<HistoricoAcademicoProps> = ({ formData, erros
           {erros.repetente && <p className="text-destructive text-xs mt-1">{erros.repetente}</p>}
         </div>
         
-        <div>
-          <Label htmlFor="boletimEscolar" className="text-sm font-medium">
-            Upload do boletim escolar
-          </Label>
-          <Input
-            id="boletimEscolar"
-            name="boletimEscolar"
-            type="file"
-            onChange={onChange}
-            className={`mt-1 ${erros.boletimEscolar ? "input-error" : ""}`}
-            accept=".pdf,.jpg,.jpeg,.png"
-          />
-          {erros.boletimEscolar && <p className="text-destructive text-xs mt-1">{erros.boletimEscolar}</p>}
-          <p className="text-xs text-muted-foreground mt-1">
-            Formatos aceitos: PDF, JPG, JPEG, PNG. Tamanho máximo: 10MB.
-          </p>
-        </div>
+        {formData.serie !== 'Pré' && (
+          <div>
+            <Label htmlFor="boletimEscolar" className="text-sm font-medium">
+              Upload do boletim escolar
+            </Label>
+            <Input
+              id="boletimEscolar"
+              name="boletimEscolar"
+              type="file"
+              onChange={onChange}
+              className={`mt-1 ${erros.boletimEscolar ? "input-error" : ""}`}
+              accept=".pdf,.jpg,.jpeg,.png"
+            />
+            {erros.boletimEscolar && <p className="text-destructive text-xs mt-1">{erros.boletimEscolar}</p>}
+            <p className="text-xs text-muted-foreground mt-1">
+              Formatos aceitos: PDF, JPG, JPEG, PNG. Tamanho máximo: 10MB.
+            </p>
+          </div>
+        )}
         
         <div>
           <Label className="text-sm font-medium">
