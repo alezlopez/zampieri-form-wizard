@@ -36,7 +36,7 @@ const HistoricoAcademico: React.FC<HistoricoAcademicoProps> = ({ formData, erros
           {erros.repetente && <p className="text-destructive text-xs mt-1">{erros.repetente}</p>}
         </div>
         
-        {formData.serie !== 'Pré' && (
+        {formData.seriePretendida !== 'Pré' && (
           <div>
             <Label htmlFor="boletimEscolar" className="text-sm font-medium">
               Upload do boletim escolar
