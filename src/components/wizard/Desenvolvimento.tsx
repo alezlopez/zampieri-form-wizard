@@ -66,23 +66,96 @@ const Desenvolvimento: React.FC<DesenvolvimentoProps> = ({ formData, erros, hand
         </div>
         
         {formData.diagnosticoTranstorno === 'Sim (diagnosticado)' && (
-          <div>
-            <Label htmlFor="laudoMedico" className="text-sm font-medium">
-              Upload do laudo médico
-            </Label>
-            <Input
-              id="laudoMedico"
-              name="laudoMedico"
-              type="file"
-              onChange={onChange}
-              className={`mt-1 ${erros.laudoMedicoArquivo ? "input-error" : ""}`}
-              accept=".pdf,.jpg,.jpeg,.png"
-            />
-            {erros.laudoMedicoArquivo && <p className="text-destructive text-xs mt-1">{erros.laudoMedicoArquivo}</p>}
-            <p className="text-xs text-muted-foreground mt-1">
-              Formatos aceitos: PDF, JPG, JPEG, PNG. Tamanho máximo: 10MB.
-            </p>
-          </div>
+          <>
+            <div>
+              <Label htmlFor="laudoMedico" className="text-sm font-medium">
+                Upload do laudo médico
+              </Label>
+              <Input
+                id="laudoMedico"
+                name="laudoMedico"
+                type="file"
+                onChange={onChange}
+                className={`mt-1 ${erros.laudoMedicoArquivo ? "input-error" : ""}`}
+                accept=".pdf,.jpg,.jpeg,.png"
+              />
+              {erros.laudoMedicoArquivo && <p className="text-destructive text-xs mt-1">{erros.laudoMedicoArquivo}</p>}
+              <p className="text-xs text-muted-foreground mt-1">
+                Formatos aceitos: PDF, JPG, JPEG, PNG. Tamanho máximo: 10MB.
+              </p>
+            </div>
+            
+            <div>
+              <Label className="text-sm font-medium">O(a) Aluno(a) possue Terapeuta Ocupacional (TO)?</Label>
+              <RadioGroup 
+                value={formData.possuiTO || ""} 
+                onValueChange={(value) => handleRadioChange("possuiTO", value)}
+                className="mt-2"
+              >
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="Sim" id="to-sim" />
+                  <Label htmlFor="to-sim">Sim</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="Não" id="to-nao" />
+                  <Label htmlFor="to-nao">Não</Label>
+                </div>
+              </RadioGroup>
+              {erros.possuiTO && <p className="text-destructive text-xs mt-1">{erros.possuiTO}</p>}
+            </div>
+            
+            {formData.possuiTO === 'Sim' && (
+              <div className="space-y-4 border-l-2 border-primary/20 pl-4">
+                <div>
+                  <Label htmlFor="nomeTO" className="text-sm font-medium">
+                    Nome do(a) TO
+                  </Label>
+                  <Input
+                    id="nomeTO"
+                    name="nomeTO"
+                    type="text"
+                    value={formData.nomeTO || ""}
+                    onChange={onChange}
+                    className={`mt-1 ${erros.nomeTO ? "input-error" : ""}`}
+                    placeholder="Nome completo do terapeuta ocupacional"
+                  />
+                  {erros.nomeTO && <p className="text-destructive text-xs mt-1">{erros.nomeTO}</p>}
+                </div>
+                
+                <div>
+                  <Label htmlFor="rgTO" className="text-sm font-medium">
+                    RG
+                  </Label>
+                  <Input
+                    id="rgTO"
+                    name="rgTO"
+                    type="text"
+                    value={formData.rgTO || ""}
+                    onChange={onChange}
+                    className={`mt-1 ${erros.rgTO ? "input-error" : ""}`}
+                    placeholder="RG do terapeuta ocupacional"
+                  />
+                  {erros.rgTO && <p className="text-destructive text-xs mt-1">{erros.rgTO}</p>}
+                </div>
+                
+                <div>
+                  <Label htmlFor="whatsappTO" className="text-sm font-medium">
+                    WhatsApp
+                  </Label>
+                  <Input
+                    id="whatsappTO"
+                    name="whatsappTO"
+                    type="text"
+                    value={formData.whatsappTO || ""}
+                    onChange={onChange}
+                    className={`mt-1 ${erros.whatsappTO ? "input-error" : ""}`}
+                    placeholder="(00) 00000-0000"
+                  />
+                  {erros.whatsappTO && <p className="text-destructive text-xs mt-1">{erros.whatsappTO}</p>}
+                </div>
+              </div>
+            )}
+          </>
         )}
         
         {formData.diagnosticoTranstorno === 'Sim (em avaliação)' && (
