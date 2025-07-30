@@ -3,6 +3,7 @@ import React from 'react';
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Input } from "@/components/ui/input";
+import { formatWhatsApp } from '@/utils/validations';
 
 interface DesenvolvimentoProps {
   formData: any;
@@ -12,6 +13,12 @@ interface DesenvolvimentoProps {
 }
 
 const Desenvolvimento: React.FC<DesenvolvimentoProps> = ({ formData, erros, handleRadioChange, onChange }) => {
+  const handleWhatsAppTOChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const whatsappFormatado = formatWhatsApp(e.target.value);
+    e.target.value = whatsappFormatado;
+    onChange(e);
+  };
+
   return (
     <div className="space-y-4">
       <h3 className="text-lg font-medium">Desenvolvimento e Comportamento</h3>
@@ -146,10 +153,10 @@ const Desenvolvimento: React.FC<DesenvolvimentoProps> = ({ formData, erros, hand
                     id="whatsappTO"
                     name="whatsappTO"
                     type="text"
-                    value={formData.whatsappTO || ""}
-                    onChange={onChange}
+                    value={formData.whatsappTO || "+55 "}
+                    onChange={handleWhatsAppTOChange}
                     className={`mt-1 ${erros.whatsappTO ? "input-error" : ""}`}
-                    placeholder="(00) 00000-0000"
+                    placeholder="+55 (00) 00000-0000"
                   />
                   {erros.whatsappTO && <p className="text-destructive text-xs mt-1">{erros.whatsappTO}</p>}
                 </div>
