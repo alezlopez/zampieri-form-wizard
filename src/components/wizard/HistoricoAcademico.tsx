@@ -39,7 +39,7 @@ const HistoricoAcademico: React.FC<HistoricoAcademicoProps> = ({ formData, erros
         {formData.seriePretendida !== 'Pré' && formData.seriePretendida !== '1º ano' && (
           <div>
             <Label htmlFor="boletimEscolar" className="text-sm font-medium">
-              Upload do boletim escolar
+              Upload do boletim escolar (opcional)
             </Label>
             <Input
               id="boletimEscolar"
