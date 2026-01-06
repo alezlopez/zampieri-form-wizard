@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, memo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -35,64 +35,70 @@ const FormWizard = () => {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const { toast } = useToast();
   
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target as HTMLInputElement;
     
     // Verifica o tipo do input para tratá-lo adequadamente
     if (type === 'checkbox') {
       const checked = (e.target as HTMLInputElement).checked;
-      setFormData({
-        ...formData,
+      setFormData((prev: any) => ({
+        ...prev,
         [name]: checked
-      });
+      }));
     } else if (type === 'file') {
       const files = (e.target as HTMLInputElement).files;
       if (files && files.length > 0) {
-        setFormData({
-          ...formData,
+        setFormData((prev: any) => ({
+          ...prev,
           [name]: files[0]
-        });
+        }));
         
         // Remove o erro ao selecionar um arquivo
-        if (erros[name]) {
-          const novosErros = { ...erros };
-          delete novosErros[name];
-          setErros(novosErros);
-        }
+        setErros((prev) => {
+          if (prev[name]) {
+            const novosErros = { ...prev };
+            delete novosErros[name];
+            return novosErros;
+          }
+          return prev;
+        });
       }
     } else {
-      setFormData({
-        ...formData,
+      setFormData((prev: any) => ({
+        ...prev,
         [name]: value
-      });
+      }));
       
       // Remove o erro quando o campo é preenchido
-      if (erros[name] && value.trim()) {
-        const novosErros = { ...erros };
-        delete novosErros[name];
-        setErros(novosErros);
+      if (value.trim()) {
+        setErros((prev) => {
+          if (prev[name]) {
+            const novosErros = { ...prev };
+            delete novosErros[name];
+            return novosErros;
+          }
+          return prev;
+        });
       }
     }
-  };
+  }, []);
   
-  const handleRadioChange = (nome: string, valor: string) => {
-    setFormData({
-      ...formData,
+  const handleRadioChange = useCallback((nome: string, valor: string) => {
+    setFormData((prev: any) => ({
+      ...prev,
       [nome]: valor
-    });
+    }));
     
     // Limpa o erro desse campo
-    if (erros[nome]) {
-      const novosErros = { ...erros };
-      delete novosErros[nome];
-      setErros(novosErros);
-    }
-    
-    // Lógica especial para exibir upload de boletim quando aluno é repetente
-    if (nome === 'repetente' && valor === 'Sim') {
-      console.log('Aluno repetente, habilitando upload de boletim');
-    }
-  };
+    setErros((prev) => {
+      if (prev[nome]) {
+        const novosErros = { ...prev };
+        delete novosErros[nome];
+        return novosErros;
+      }
+      return prev;
+    });
+  }, []);
   
   const validarEtapaAtual = (): boolean => {
     const novosErros: Record<string, string> = {};
@@ -151,29 +157,32 @@ const FormWizard = () => {
     return Object.keys(novosErros).length === 0;
   };
   
-  const avancarEtapa = () => {
+  const avancarEtapa = useCallback(() => {
     const eValido = validarEtapaAtual();
     if (eValido) {
       if (etapaAtual < etapas.length - 1) {
         setEtapaAtual(etapaAtual + 1);
-        window.scrollTo(0, 0);
+        setTimeout(() => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }, 100);
       }
     } else {
-      // Exibe um toast com mensagem de erro
       toast({
         title: "Erro de validação",
         description: "Por favor, corrija os erros antes de prosseguir.",
         variant: "destructive"
       });
     }
-  };
+  }, [etapaAtual, validarEtapaAtual, toast]);
   
-  const voltarEtapa = () => {
+  const voltarEtapa = useCallback(() => {
     if (etapaAtual > 0) {
       setEtapaAtual(etapaAtual - 1);
-      window.scrollTo(0, 0);
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 100);
     }
-  };
+  }, [etapaAtual]);
   
   const enviarFormulario = async () => {
     const eValido = validarEtapaAtual();
