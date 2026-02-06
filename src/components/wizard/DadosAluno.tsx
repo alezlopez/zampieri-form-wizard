@@ -125,11 +125,19 @@ const DadosAluno: React.FC<DadosAlunoProps> = ({ formData, erros, onChange, hand
               <SelectValue placeholder="Selecione a série" />
             </SelectTrigger>
             <SelectContent>
-              {seriesDisponiveis.map((serie) => (
-                <SelectItem key={serie} value={serie}>
-                  {serie}
-                </SelectItem>
-              ))}
+              {seriesDisponiveis.map((serie) => {
+                const temVaga = serieTemVaga(serie);
+                return (
+                  <SelectItem 
+                    key={serie} 
+                    value={serie} 
+                    disabled={!temVaga}
+                    className={!temVaga ? "text-muted-foreground" : ""}
+                  >
+                    {serie}{!temVaga ? " (Vagas esgotadas)" : ""}
+                  </SelectItem>
+                );
+              })}
             </SelectContent>
           </Select>
           {erros.seriePretendida && <p className="text-destructive text-xs mt-1">{erros.seriePretendida}</p>}
