@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -12,13 +12,52 @@ interface DadosAlunoProps {
   handleRadioChange: (nome: string, valor: string) => void;
 }
 
+// Configuração de vagas disponíveis por série e turno
+const vagasDisponiveis: Record<string, { manha: boolean; tarde: boolean }> = {
+  "Pré": { manha: true, tarde: true },
+  "1º ano": { manha: false, tarde: true },
+  "2º ano": { manha: false, tarde: true },
+  "3º ano": { manha: false, tarde: true },
+  "4º ano": { manha: false, tarde: true },
+  "5º ano": { manha: true, tarde: true },
+  "6º ano": { manha: false, tarde: false },
+  "7º ano": { manha: false, tarde: true },
+  "8º ano": { manha: false, tarde: false },
+  "9º ano": { manha: true, tarde: true },
+  "1º Médio": { manha: false, tarde: false },
+  "2º Médio": { manha: true, tarde: true },
+  "3º Médio": { manha: true, tarde: true },
+};
+
+// Verifica se a série tem pelo menos um turno disponível
+const serieTemVaga = (serie: string): boolean => {
+  const vagas = vagasDisponiveis[serie];
+  return vagas?.manha || vagas?.tarde;
+};
+
+// Verifica se o turno está disponível para a série selecionada
+const turnoDisponivel = (serie: string, turno: string): boolean => {
+  const vagas = vagasDisponiveis[serie];
+  if (!vagas) return true;
+  return turno === "Manhã" ? vagas.manha : vagas.tarde;
+};
+
 const DadosAluno: React.FC<DadosAlunoProps> = ({ formData, erros, onChange, handleRadioChange }) => {
   const seriesDisponiveis = [
     "Pré", "1º ano", "2º ano", "3º ano", "4º ano", "5º ano",
     "6º ano", "7º ano", "8º ano", "9º ano",
     "1º Médio", "2º Médio", "3º Médio"
   ];
-  
+
+  // Limpa o turno se ele não estiver disponível para a série selecionada
+  useEffect(() => {
+    if (formData.seriePretendida && formData.turnoPreferencia) {
+      if (!turnoDisponivel(formData.seriePretendida, formData.turnoPreferencia)) {
+        handleRadioChange("turnoPreferencia", "");
+      }
+    }
+  }, [formData.seriePretendida]);
+
   const formatarData = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value.replace(/\D/g, '');
     let formattedDate = '';
