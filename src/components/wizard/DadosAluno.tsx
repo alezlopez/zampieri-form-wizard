@@ -150,14 +150,24 @@ const DadosAluno: React.FC<DadosAlunoProps> = ({ formData, erros, onChange, hand
             onValueChange={(value) => handleRadioChange("turnoPreferencia", value)}
             className="mt-2"
           >
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="Manhã" id="turno-manha" />
-              <Label htmlFor="turno-manha">Manhã</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="Tarde" id="turno-tarde" />
-              <Label htmlFor="turno-tarde">Tarde</Label>
-            </div>
+            {["Manhã", "Tarde"].map((turno) => {
+              const disponivel = !formData.seriePretendida || turnoDisponivel(formData.seriePretendida, turno);
+              return (
+                <div key={turno} className="flex items-center space-x-2">
+                  <RadioGroupItem 
+                    value={turno} 
+                    id={`turno-${turno.toLowerCase()}`}
+                    disabled={!disponivel}
+                  />
+                  <Label 
+                    htmlFor={`turno-${turno.toLowerCase()}`}
+                    className={!disponivel ? "text-muted-foreground cursor-not-allowed" : ""}
+                  >
+                    {turno}{!disponivel ? " (Esgotado)" : ""}
+                  </Label>
+                </div>
+              );
+            })}
           </RadioGroup>
           {erros.turnoPreferencia && <p className="text-destructive text-xs mt-1">{erros.turnoPreferencia}</p>}
         </div>
