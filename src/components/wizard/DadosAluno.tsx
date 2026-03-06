@@ -14,19 +14,19 @@ interface DadosAlunoProps {
 
 // Configuração de vagas disponíveis por série e turno
 const vagasDisponiveis: Record<string, { manha: boolean; tarde: boolean }> = {
-  "Pré": { manha: true, tarde: true },
-  "1º ano": { manha: false, tarde: true },
-  "2º ano": { manha: false, tarde: true },
-  "3º ano": { manha: false, tarde: true },
-  "4º ano": { manha: false, tarde: true },
-  "5º ano": { manha: true, tarde: true },
+  "Pré": { manha: false, tarde: false },
+  "1º ano": { manha: false, tarde: false },
+  "2º ano": { manha: false, tarde: false },
+  "3º ano": { manha: false, tarde: false },
+  "4º ano": { manha: false, tarde: false },
+  "5º ano": { manha: false, tarde: false },
   "6º ano": { manha: false, tarde: false },
-  "7º ano": { manha: false, tarde: true },
+  "7º ano": { manha: false, tarde: false },
   "8º ano": { manha: false, tarde: false },
-  "9º ano": { manha: true, tarde: true },
+  "9º ano": { manha: false, tarde: true },
   "1º Médio": { manha: false, tarde: false },
-  "2º Médio": { manha: true, tarde: true },
-  "3º Médio": { manha: true, tarde: true },
+  "2º Médio": { manha: true, tarde: false },
+  "3º Médio": { manha: true, tarde: false },
 };
 
 // Verifica se a série tem pelo menos um turno disponível
